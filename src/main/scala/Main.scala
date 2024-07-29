@@ -3,6 +3,9 @@ import scalafx.scene.Scene
 import scalafx.scene.layout.HBox
 
 object ChessGame extends JFXApp {
+  val tileSize = 85
+  val cols = 8
+  val rows = 8
   val chessBoard = new ChessBoard
 
   stage = new JFXApp.PrimaryStage {
@@ -14,5 +17,8 @@ object ChessGame extends JFXApp {
         )
       }
     }
+    width = cols * tileSize + 14
+    height = rows * tileSize + 36
+    resizable = false
   }
 }
