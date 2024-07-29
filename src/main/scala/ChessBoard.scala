@@ -13,16 +13,6 @@ class ChessBoard extends Pane {
   val pieces = collection.mutable.ListBuffer[Piece]()
   val inputHandler = new InputHandler(this)
 
-  val highlight = new Rectangle {
-    width = tileSize
-    height = tileSize
-    fill = Color.Transparent
-    stroke = Color.Red
-    strokeWidth = 2
-    visible = false
-  }
-  children.add(highlight)
-
   // Set preferred size of the Pane
   prefWidth = cols * tileSize
   prefHeight = rows * tileSize
@@ -91,4 +81,7 @@ class ChessBoard extends Pane {
   def deselectPiece(): Unit = {
     selectedPiece = None
   }
+
+
+
 }
