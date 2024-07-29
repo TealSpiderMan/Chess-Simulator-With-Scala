@@ -20,4 +20,6 @@ abstract class Piece(val board: ChessBoard, var col: Int, var row: Int, val isWh
     sprite.x = newCol * board.tileSize + (board.tileSize * 0.125)
     sprite.y = newRow * board.tileSize + (board.tileSize * 0.125)
   }
+
+  def possibleMoves(): Seq[(Int, Int)]
 }

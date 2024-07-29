@@ -1,6 +1,7 @@
 import scalafx.scene.layout.Pane
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
+import scalafx.scene.text.Text
 import javafx.scene.input.MouseEvent
 import javafx.event.EventHandler
 
@@ -45,6 +46,26 @@ class ChessBoard extends Pane {
         y = r * tileSize
       }
       children.add(tile)
+
+      if (r == 7) {
+        val letter = new Text {
+          text = ('a' + c).toChar.toString
+          style = "-fx-font-size: 18px; -fx-font-weight: bold; -fx-fill: black;"
+          x = c * tileSize + tileSize - 15
+          y = (r + 1) * tileSize - 10
+        }
+        children.add(letter)
+      }
+
+      if (c == 0) {
+        val number = new Text {
+          text = (8 - r).toString
+          style = "-fx-font-size: 18px; -fx-font-weight: bold; -fx-fill: black;"
+          x = 5
+          y = r * tileSize + 20
+        }
+        children.add(number)
+      }
     }
   }
 
@@ -76,12 +97,32 @@ class ChessBoard extends Pane {
 
   def selectPiece(piece: Piece): Unit = {
     selectedPiece = Some(piece)
+    highlightPossibleMoves(piece.possibleMoves())
   }
 
   def deselectPiece(): Unit = {
     selectedPiece = None
+    clearHighlights()
   }
 
+  def highlightPossibleMoves(moves: Seq[(Int, Int)]): Unit = {
+    for ((col, row) <- moves) {
+      val highlight = new Rectangle {
+        width = tileSize
+        height = tileSize
+        fill = Color.web("rgba(0, 255, 0, 0.5)")
+        x = col * tileSize
+        y = row * tileSize
+        styleClass.add("highlight")
+      }
+      children.add(highlight)
+    }
+  }
 
-
+  def clearHighlights(): Unit = {
+    val highlights = children.toArray.collect {
+      case node: javafx.scene.Node if node.getStyleClass.contains("highlight") => node
+    }
+    children.removeAll(highlights: _*)
+  }
 }
