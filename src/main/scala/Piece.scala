@@ -1,6 +1,6 @@
 import scalafx.scene.image.{Image, ImageView}
 
-abstract class Piece(val board: ChessBoard, var col: Int, var row: Int, isWhite: Boolean, pieceType: String) {
+abstract class Piece(val board: ChessBoard, var col: Int, var row: Int, val isWhite: Boolean, pieceType: String) {
   val colorPrefix = if (isWhite) "White" else "Black"
   val imagePath = s"/${colorPrefix}${pieceType}.png"
   val pieceImage: Image = new Image(getClass.getResourceAsStream(imagePath))
