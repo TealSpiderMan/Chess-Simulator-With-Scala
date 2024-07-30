@@ -96,33 +96,11 @@ class ChessBoard extends Pane {
   }
 
   def selectPiece(piece: Piece): Unit = {
+    deselectPiece() // Clear previous selection
     selectedPiece = Some(piece)
-    highlightPossibleMoves(piece.possibleMoves())
   }
 
   def deselectPiece(): Unit = {
     selectedPiece = None
-    clearHighlights()
-  }
-
-  def highlightPossibleMoves(moves: Seq[(Int, Int)]): Unit = {
-    for ((col, row) <- moves) {
-      val highlight = new Rectangle {
-        width = tileSize
-        height = tileSize
-        fill = Color.web("rgba(0, 255, 0, 0.5)")
-        x = col * tileSize
-        y = row * tileSize
-        styleClass.add("highlight")
-      }
-      children.add(highlight)
-    }
-  }
-
-  def clearHighlights(): Unit = {
-    val highlights = children.toArray.collect {
-      case node: javafx.scene.Node if node.getStyleClass.contains("highlight") => node
-    }
-    children.removeAll(highlights: _*)
   }
 }
