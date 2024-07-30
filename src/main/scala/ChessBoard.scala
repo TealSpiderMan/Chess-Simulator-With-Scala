@@ -1,4 +1,4 @@
-import scalafx.scene.layout.Pane
+import scalafx.scene.layout.{HBox, Pane}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.Text
@@ -96,11 +96,15 @@ class ChessBoard extends Pane {
   }
 
   def selectPiece(piece: Piece): Unit = {
-    deselectPiece() // Clear previous selection
     selectedPiece = Some(piece)
   }
 
   def deselectPiece(): Unit = {
     selectedPiece = None
+  }
+
+  def movePiece(piece: Piece, newCol: Int, newRow: Int): Unit = {
+    piece.move(newCol, newRow)
+    println(s"Piece moved to new position: ($newCol, $newRow)") // Debugging line
   }
 }

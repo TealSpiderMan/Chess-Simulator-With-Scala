@@ -8,18 +8,17 @@ abstract class Piece(val board: ChessBoard, var col: Int, var row: Int, val isWh
   val sprite = new ImageView(pieceImage) {
     fitWidth = board.tileSize * 0.75
     fitHeight = board.tileSize * 0.75
-    x = col * board.tileSize + (board.tileSize * 0.125)  // Centering the piece
-    y = row * board.tileSize + (board.tileSize * 0.125)  // Centering the piece
+    x = col * board.tileSize + (board.tileSize * 0.125) // Centering the piece
+    y = row * board.tileSize + (board.tileSize * 0.125) // Centering the piece
   }
 
   board.children.add(sprite)
 
   def move(newCol: Int, newRow: Int): Unit = {
+    println(s"Moving piece from ($col, $row) to ($newCol, $newRow)") // Debugging line
     col = newCol
     row = newRow
     sprite.x = newCol * board.tileSize + (board.tileSize * 0.125)
     sprite.y = newRow * board.tileSize + (board.tileSize * 0.125)
   }
-
-  def possibleMoves(): Seq[(Int, Int)]
 }
