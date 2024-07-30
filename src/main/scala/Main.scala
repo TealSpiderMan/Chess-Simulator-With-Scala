@@ -1,6 +1,7 @@
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
-import scalafx.scene.layout.{HBox, VBox, Pane, Priority}
+import scalafx.scene.layout.{HBox, VBox, Pane}
+import scalafx.scene.control.{Button, ScrollPane}
 import scalafx.scene.paint.Color
 import scalafx.scene.text.Text
 
@@ -19,20 +20,49 @@ object ChessGame extends JFXApp {
     style = "-fx-font-size: 18px; -fx-font-weight: bold; -fx-fill: black;"
   }
 
-  // Create a HBox for the title and set alignment to the right
-  val titleContainer = new HBox {
+  // Create a VBox for the title
+  val titleContainer = new VBox {
     children = Seq(moveHistoryTitle)
-    style = "-fx-alignment: center; -fx-padding: 10;" // Align to the right with padding
+    style = "-fx-alignment: center; -fx-padding: 10 0 10 20;" // Center alignment with padding
   }
 
-  // VBox for the green pane, including the title
+  // Create a ScrollPane for the move history
+  val moveHistoryScrollPane = new ScrollPane {
+    content = chessBoard.moveHistory
+    style = s"-fx-background: rgba(${(semiTransparentGreen.red * 255).toInt}, ${(semiTransparentGreen.green * 255).toInt}, ${(semiTransparentGreen.blue * 255).toInt}, ${semiTransparentGreen.opacity});"
+    fitToWidth = true
+    fitToHeight = true
+    // Set the background of the viewport
+    vbarPolicy = ScrollPane.ScrollBarPolicy.AsNeeded
+    hbarPolicy = ScrollPane.ScrollBarPolicy.Never
+  }
+
+  chessBoard.moveHistory.setStyle(s"-fx-background-color: rgba(${(semiTransparentGreen.red * 255).toInt}, ${(semiTransparentGreen.green * 255).toInt}, ${(semiTransparentGreen.blue * 255).toInt}, ${semiTransparentGreen.opacity});")
+
+  // Create the reset button
+  val resetButton = new Button("Reset") {
+    style = "-fx-font-size: 14px; -fx-padding: 10;"
+    onAction = _ => {
+      // Reset the game logic
+      chessBoard.children.clear()
+      chessBoard.pieces.clear()
+      chessBoard.moveHistory.children.clear()
+      chessBoard.drawBoard()
+      chessBoard.placePieces()
+    }
+  }
+
+  // VBox for the green pane, including the title, move history, and reset button
   val greenPane = new VBox {
     prefWidth = 200
     prefHeight = rows * tileSize
     style = s"-fx-background-color: rgba(${(semiTransparentGreen.red * 255).toInt}, ${(semiTransparentGreen.green * 255).toInt}, ${(semiTransparentGreen.blue * 255).toInt}, ${semiTransparentGreen.opacity});"
     children = Seq(
-      titleContainer
+      titleContainer,
+      moveHistoryScrollPane,
+      resetButton
     )
+    spacing = 10
   }
 
   stage = new JFXApp.PrimaryStage {

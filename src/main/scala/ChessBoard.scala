@@ -1,4 +1,4 @@
-import scalafx.scene.layout.{HBox, Pane}
+import scalafx.scene.layout.{HBox, Pane, VBox}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.Text
@@ -9,10 +9,14 @@ class ChessBoard extends Pane {
   val tileSize = 85
   val cols = 8
   val rows = 8
+  var moveCount = 0
 
   var selectedPiece: Option[Piece] = None
   val pieces = collection.mutable.ListBuffer[Piece]()
   val inputHandler = new InputHandler(this)
+  val moveHistory = new VBox {
+    spacing = 2 // Adjust the spacing between lines
+  }
 
   // Set preferred size of the Pane
   prefWidth = cols * tileSize
@@ -105,6 +109,17 @@ class ChessBoard extends Pane {
 
   def movePiece(piece: Piece, newCol: Int, newRow: Int): Unit = {
     piece.move(newCol, newRow)
+    logMove(piece, newCol, newRow)
     println(s"Piece moved to new position: ($newCol, $newRow)") // Debugging line
+  }
+
+  // add the log feature in the UI
+  def logMove(piece: Piece, newCol: Int, newRow: Int): Unit = {
+    moveCount += 1
+    val moveText = new Text {
+      text = s"$moveCount. Moved ${if (piece.isWhite) "White" else "Black"} ${piece.getClass.getSimpleName} to ${('a' + newCol).toChar}${8 - newRow}\n"
+      style = "-fx-font-size: 11px; -fx-fill: black;"
+    }
+    moveHistory.children.add(moveText)
   }
 }
