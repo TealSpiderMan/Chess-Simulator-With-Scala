@@ -23,7 +23,7 @@ object ChessGame extends JFXApp {
   // Create a VBox for the title
   val titleContainer = new VBox {
     children = Seq(moveHistoryTitle)
-    style = "-fx-alignment: center; -fx-padding: 10 0 10 20;" // Center alignment with padding
+    style = "-fx-alignment: center; -fx-padding: 15 11 -10 5;" // Center alignment with padding (top, left, bottom, right)
   }
 
   // Create a ScrollPane for the move history
@@ -40,13 +40,12 @@ object ChessGame extends JFXApp {
   chessBoard.moveHistory.setStyle(s"-fx-background-color: rgba(${(semiTransparentGreen.red * 255).toInt}, ${(semiTransparentGreen.green * 255).toInt}, ${(semiTransparentGreen.blue * 255).toInt}, ${semiTransparentGreen.opacity});")
 
   // Create the reset button
-  val resetButton = new Button("Reset") {
-    style = "-fx-font-size: 14px; -fx-padding: 10;"
+  val resetButton = new Button("Reset Game") {
+    style = "-fx-font-size: 14px; -fx-padding: 10 20 10 ; -fx-alignment: center"
     onAction = _ => {
       // Reset the game logic
       chessBoard.children.clear()
       chessBoard.pieces.clear()
-      chessBoard.moveHistory.children.clear()
       chessBoard.drawBoard()
       chessBoard.placePieces()
     }

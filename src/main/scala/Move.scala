@@ -23,3 +23,4 @@ class Move(board: ChessBoard, movedPiece: Piece, newColPos: Int, newRowPos: Int)
     println(s"Executed move to ($newCol, $newRow)")
   }
 }
+
