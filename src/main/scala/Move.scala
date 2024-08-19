@@ -14,11 +14,15 @@ class Move(board: ChessBoard, movedPiece: Piece, newColPos: Int, newRowPos: Int)
         board.pieces -= capturedPiece
         board.children.remove(capturedPiece.sprite) // Remove the visual representation
         board.movePiece(piece, newColPos, newRowPos)
-      case Some(capturedPiece) if capturedPiece.isWhite == piece.isWhite =>
+        board.logMove(piece, newColPos, newRowPos, Some(capturedPiece))
+
+      case Some(_) =>
         // Do nothing and move the piece back to its original position
         piece.move(oldCol, oldRow)
+
       case None =>
         board.movePiece(piece, newColPos, newRowPos)
+        board.logMove(piece, newColPos, newRowPos)
     }
     println(s"Executed move to ($newCol, $newRow)")
   }

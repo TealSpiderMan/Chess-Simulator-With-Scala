@@ -109,17 +109,28 @@ class ChessBoard extends Pane {
 
   def movePiece(piece: Piece, newCol: Int, newRow: Int): Unit = {
     piece.move(newCol, newRow)
-    logMove(piece, newCol, newRow)
     println(s"Piece moved to new position: ($newCol, $newRow)") // Debugging line
   }
 
   // add the log feature in the UI
-  def logMove(piece: Piece, newCol: Int, newRow: Int): Unit = {
+  def logMove(piece: Piece, newCol: Int, newRow: Int, capturedPiece: Option[Piece] = None): Unit = {
     moveCount += 1
+    val moveDescription = capturedPiece match {
+      case Some(captured) =>
+        s"$moveCount. ${if (piece.isWhite) "White" else "Black"} ${piece.getClass.getSimpleName} captured ${if (captured.isWhite) "White" else "Black"} ${captured.getClass.getSimpleName} at ${('a' + newCol).toChar}${8 - newRow}\n"
+      case None =>
+        s"$moveCount. Moved ${if (piece.isWhite) "White" else "Black"} ${piece.getClass.getSimpleName} to ${('a' + newCol).toChar}${8 - newRow}\n"
+    }
     val moveText = new Text {
-      text = s"$moveCount. Moved ${if (piece.isWhite) "White" else "Black"} ${piece.getClass.getSimpleName} to ${('a' + newCol).toChar}${8 - newRow}\n"
+      text = moveDescription
       style = "-fx-font-size: 11px; -fx-fill: black;"
     }
     moveHistory.children.add(moveText)
+  }
+
+
+  def resetMoveHistory(): Unit = {
+    moveHistory.children.clear()
+    moveCount = 0
   }
 }
