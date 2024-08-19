@@ -12,32 +12,16 @@ class ChessBoard extends Pane {
   val cols = 8
   val rows = 8
   var moveCount = 0
-
   var selectedPiece: Option[Piece] = None
   val pieces = collection.mutable.ListBuffer[Piece]()
   val inputHandler = new InputHandler(this)
   val moveHistory = new VBox {
-    spacing = 4
+    spacing = 6
   }
 
-  // Set preferred size of the Pane
+  // calculation of preferred size of the Pane
   prefWidth = cols * tileSize
   prefHeight = rows * tileSize
-
-  // Media player for move sound
-  private val moveSound: Media = try {
-    val resource: URL = getClass.getResource("/move_sound.mp3")
-    println(s"Resource URL: $resource")
-    if (resource == null) throw new RuntimeException("Resource not found")
-    new Media(resource.toExternalForm)
-  } catch {
-    case e: Exception =>
-      println(s"Exception initializing Media: ${e.getMessage}")
-      e.printStackTrace()
-      null
-  }
-
-  private val mediaPlayer: MediaPlayer = if (moveSound != null) new MediaPlayer(moveSound) else null
 
   // Draw the chessboard and pieces
   drawBoard()
@@ -56,8 +40,10 @@ class ChessBoard extends Pane {
     override def handle(event: MouseEvent): Unit = inputHandler.handleMouseReleased(event)
   })
 
+  // drawing the chessboard
   def drawBoard(): Unit = {
     for (r <- 0 until rows; c <- 0 until cols) {
+      // inner and outer box color
       val color = if ((c + r) % 2 == 0) Color.web("#EEEED2") else Color.web("#769656")
       val tile = new Rectangle {
         width = tileSize
@@ -68,6 +54,7 @@ class ChessBoard extends Pane {
       }
       children.add(tile)
 
+      // numerical labels on board
       if (r == 7) {
         val letter = new Text {
           text = ('a' + c).toChar.toString
@@ -78,6 +65,7 @@ class ChessBoard extends Pane {
         children.add(letter)
       }
 
+      // alphabetical labels on board
       if (c == 0) {
         val number = new Text {
           text = (8 - r).toString
@@ -90,6 +78,7 @@ class ChessBoard extends Pane {
     }
   }
 
+  // handle piece placements (white side)
   def placePieces(): Unit = {
     pieces += new Rook(this, 0, 0, isWhite = false)
     pieces += new Knight(this, 1, 0, isWhite = false)
@@ -101,6 +90,7 @@ class ChessBoard extends Pane {
     pieces += new Rook(this, 7, 0, isWhite = false)
     for (col <- 0 until cols) pieces += new Pawn(this, col, 1, isWhite = false)
 
+    // handle piece placements (black side)
     pieces += new Rook(this, 0, 7, isWhite = true)
     pieces += new Knight(this, 1, 7, isWhite = true)
     pieces += new Bishop(this, 2, 7, isWhite = true)
@@ -112,6 +102,7 @@ class ChessBoard extends Pane {
     for (col <- 0 until cols) pieces += new Pawn(this, col, 6, isWhite = true)
   }
 
+  // get piece from Pieces function
   def getPiece(col: Int, row: Int): Option[Piece] = {
     pieces.find(piece => piece.col == col && piece.row == row)
   }
@@ -124,9 +115,9 @@ class ChessBoard extends Pane {
     selectedPiece = None
   }
 
+  // handle moving pieces and adding sound effects
   def movePiece(piece: Piece, newCol: Int, newRow: Int): Unit = {
     piece.move(newCol, newRow)
-    println("Playing sound")
     try {
       // Create a new MediaPlayer for each move
       val resource: URL = getClass.getResource("/move_sound.mp3")
@@ -158,6 +149,7 @@ class ChessBoard extends Pane {
     moveHistory.children.add(moveText)
   }
 
+  // reset move history button
   def resetMoveHistory(): Unit = {
     moveHistory.children.clear()
     moveCount = 0

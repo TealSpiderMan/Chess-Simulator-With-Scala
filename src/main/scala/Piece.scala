@@ -5,6 +5,7 @@ abstract class Piece(val board: ChessBoard, var col: Int, var row: Int, val isWh
   val imagePath = s"/${colorPrefix}${pieceType}.png"
   val pieceImage: Image = new Image(getClass.getResourceAsStream(imagePath))
 
+  // edit this to adjust sprite sizes (chess piece.png)
   val sprite = new ImageView(pieceImage) {
     fitWidth = board.tileSize * 0.75
     fitHeight = board.tileSize * 0.75
@@ -14,6 +15,7 @@ abstract class Piece(val board: ChessBoard, var col: Int, var row: Int, val isWh
 
   board.children.add(sprite)
 
+  // piece movement logic
   def move(newCol: Int, newRow: Int): Unit = {
     println(s"Moving piece from ($col, $row) to ($newCol, $newRow)") // Debugging line
     col = newCol
