@@ -4,6 +4,7 @@ import scalafx.scene.layout.{HBox, VBox, Pane}
 import scalafx.scene.control.{Button, ScrollPane}
 import scalafx.scene.paint.Color
 import scalafx.scene.text.Text
+import scalafx.geometry.Pos
 
 object ChessGame extends JFXApp {
   val tileSize = 85
@@ -51,11 +52,20 @@ object ChessGame extends JFXApp {
     }
   }
 
+  // reset history button
   val resetHistoryButton = new Button("Reset History") {
-    style = "-fx-font-size: 14px; -fx-padding: 10 20 10 ; -fx-alignment: center"
+    style = "-fx-font-size: 14px; -fx-padding: 10 17 10 ; -fx-alignment: center"
     onAction = _ => {
       chessBoard.resetMoveHistory()
     }
+  }
+
+  // Create an HBox for the buttons and align it to the right
+  val buttonBox = new VBox {
+    children = Seq(resetButton, resetHistoryButton)
+    spacing = 10
+    alignment = Pos.Center
+    style = "-fx-padding: 10;"
   }
 
   // VBox for the green pane, including the title, move history, and reset button
@@ -66,8 +76,7 @@ object ChessGame extends JFXApp {
     children = Seq(
       titleContainer,
       moveHistoryScrollPane,
-      resetButton,
-      resetHistoryButton
+      buttonBox
     )
     spacing = 10
   }
@@ -84,6 +93,7 @@ object ChessGame extends JFXApp {
     }
     width = cols * tileSize + 200 + 36
     height = rows * tileSize + 36
+    resizable = false
   }
 
 
