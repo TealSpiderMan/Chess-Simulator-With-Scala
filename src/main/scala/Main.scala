@@ -23,7 +23,7 @@ object ChessGame extends JFXApp {
   // Create a VBox for the title
   val titleContainer = new VBox {
     children = Seq(moveHistoryTitle)
-    style = "-fx-alignment: center; -fx-padding: 15 11 -10 25;" // Center alignment with padding (top, left, bottom, right)
+    style = "-fx-alignment: center; -fx-padding: 15 11 -10 20;" // Center alignment with padding (top, left, bottom, right)
   }
 
   // Create a ScrollPane for the move history
@@ -60,7 +60,7 @@ object ChessGame extends JFXApp {
 
   // VBox for the green pane, including the title, move history, and reset button
   val greenPane = new VBox {
-    prefWidth = 200
+    prefWidth = 223
     prefHeight = rows * tileSize
     style = s"-fx-background-color: rgba(${(semiTransparentGreen.red * 255).toInt}, ${(semiTransparentGreen.green * 255).toInt}, ${(semiTransparentGreen.blue * 255).toInt}, ${semiTransparentGreen.opacity});"
     children = Seq(
