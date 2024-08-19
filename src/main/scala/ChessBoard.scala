@@ -1,4 +1,4 @@
-import scalafx.scene.layout.{HBox, Pane, VBox}
+import scalafx.scene.layout.{Pane, VBox}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.Text
