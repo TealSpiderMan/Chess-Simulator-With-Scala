@@ -4,6 +4,8 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.Text
 import javafx.scene.input.MouseEvent
 import javafx.event.EventHandler
+import javafx.scene.media.{Media, MediaPlayer}
+import java.net.URL
 
 class ChessBoard extends Pane {
   val tileSize = 85
@@ -15,12 +17,27 @@ class ChessBoard extends Pane {
   val pieces = collection.mutable.ListBuffer[Piece]()
   val inputHandler = new InputHandler(this)
   val moveHistory = new VBox {
-    spacing = 2 // Adjust the spacing between lines
+    spacing = 4
   }
 
   // Set preferred size of the Pane
   prefWidth = cols * tileSize
   prefHeight = rows * tileSize
+
+  // Media player for move sound
+  private val moveSound: Media = try {
+    val resource: URL = getClass.getResource("/move_sound.mp3")
+    println(s"Resource URL: $resource")
+    if (resource == null) throw new RuntimeException("Resource not found")
+    new Media(resource.toExternalForm)
+  } catch {
+    case e: Exception =>
+      println(s"Exception initializing Media: ${e.getMessage}")
+      e.printStackTrace()
+      null
+  }
+
+  private val mediaPlayer: MediaPlayer = if (moveSound != null) new MediaPlayer(moveSound) else null
 
   // Draw the chessboard and pieces
   drawBoard()
@@ -109,17 +126,30 @@ class ChessBoard extends Pane {
 
   def movePiece(piece: Piece, newCol: Int, newRow: Int): Unit = {
     piece.move(newCol, newRow)
-    println(s"Piece moved to new position: ($newCol, $newRow)") // Debugging line
+    println("Playing sound")
+    try {
+      // Create a new MediaPlayer for each move
+      val resource: URL = getClass.getResource("/move_sound.mp3")
+      if (resource != null) {
+        val moveSound = new Media(resource.toExternalForm)
+        val mediaPlayer = new MediaPlayer(moveSound)
+        mediaPlayer.play() // Play the move sound
+      } else {
+        println("Move sound resource not found.")
+      }
+    } catch {
+      case e: Exception => println(s"Exception playing sound: ${e.getMessage}")
+    }
   }
 
-  // add the log feature in the UI
+  // Add the log feature in the UI
   def logMove(piece: Piece, newCol: Int, newRow: Int, capturedPiece: Option[Piece] = None): Unit = {
     moveCount += 1
     val moveDescription = capturedPiece match {
       case Some(captured) =>
-        s"$moveCount. ${if (piece.isWhite) "White" else "Black"} ${piece.getClass.getSimpleName} captured ${if (captured.isWhite) "White" else "Black"} ${captured.getClass.getSimpleName} at ${('a' + newCol).toChar}${8 - newRow}\n"
+        s"$moveCount. ${if (piece.isWhite) "White" else "Black"} ${piece.getClass.getSimpleName} captured ${if (captured.isWhite) "White" else "Black"} ${captured.getClass.getSimpleName} at ${('a' + newCol).toChar}${8 - newRow}"
       case None =>
-        s"$moveCount. Moved ${if (piece.isWhite) "White" else "Black"} ${piece.getClass.getSimpleName} to ${('a' + newCol).toChar}${8 - newRow}\n"
+        s"$moveCount. Moved ${if (piece.isWhite) "White" else "Black"} ${piece.getClass.getSimpleName} to ${('a' + newCol).toChar}${8 - newRow}"
     }
     val moveText = new Text {
       text = moveDescription
@@ -127,7 +157,6 @@ class ChessBoard extends Pane {
     }
     moveHistory.children.add(moveText)
   }
-
 
   def resetMoveHistory(): Unit = {
     moveHistory.children.clear()

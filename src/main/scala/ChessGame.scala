@@ -1,6 +1,6 @@
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
-import scalafx.scene.layout.{HBox, VBox, Pane}
+import scalafx.scene.layout.{HBox, VBox}
 import scalafx.scene.control.{Button, ScrollPane}
 import scalafx.scene.paint.Color
 import scalafx.scene.text.Text
