@@ -1,4 +1,6 @@
-![image](https://github.com/user-attachments/assets/bb969023-6e7e-4cba-8da9-c39791c6210a)# ChessBoard - ScalaFX Chessboard
+![image](https://github.com/user-attachments/assets/bb969023-6e7e-4cba-8da9-c39791c6210a)
+
+# ChessBoard - ScalaFX Chessboard
 
 This project implements a graphical chessboard using **ScalaFX**. It provides a simple graphical user interface (GUI) displaying an 8x8 chessboard with alternating light and dark squares. The chessboard is rendered using ScalaFX's Canvas and drawing functionalities.
 
