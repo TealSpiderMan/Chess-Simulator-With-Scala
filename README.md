@@ -9,6 +9,10 @@ This project implements a graphical chessboard using **ScalaFX**. It provides a 
 - Renders an 8x8 chessboard with alternating square colors (light and dark).
 - Uses **ScalaFX** to create a GUI with basic drawing capabilities.
 - Each square's color alternates based on its position (like a real chessboard).
+- Fully equipped with unique sound effects.
+- Reset game and play history.
+
+![image](https://github.com/user-attachments/assets/93c73017-bdd8-4759-921c-cd9d855c8c23)
 
 ## Requirements
 
