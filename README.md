@@ -13,6 +13,7 @@ This project implements a graphical chessboard using **ScalaFX**. It provides a 
 - Reset game and play history.
 
 ![image](https://github.com/user-attachments/assets/93c73017-bdd8-4759-921c-cd9d855c8c23)
+![image](https://github.com/user-attachments/assets/3010a685-f8f1-4800-a08f-b4a5abcd6606)
 
 ## Requirements
 
